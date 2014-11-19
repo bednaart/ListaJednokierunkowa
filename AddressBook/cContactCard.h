@@ -10,10 +10,12 @@ public:
 
 	cContactCard();
 	~cContactCard();
-	int mAddContact();
-	int mRemoveContact();
-	int mShowAllContacts();
-	int mSearchForContact();
+	string cContactCard::mcGetName();
+	string cContactCard::mcGetEmail();
+	string cContactCard::mcGetPhone();
+	cContactCard* mcGetNextPosition();
+	void mcChangeNextPosition(cContactCard* pcNewNextPosition);
+	void cContactCard::mcGetDataFromUser();
 
 private:
 
@@ -21,7 +23,7 @@ private:
 	string sEmail;
 	string sPhone;
 
-	cContactCard* pcNextPosition;
+	cContactCard* pcNextPosition = NULL;
 
 };
 

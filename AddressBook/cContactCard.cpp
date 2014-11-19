@@ -1,40 +1,48 @@
 #pragma once
 #include "cContactCard.h"
 
-using namespace std;
 
 cContactCard::cContactCard()
 {
-	pcNextPosition = NULL;
-
 }
-
 
 cContactCard::~cContactCard()
 {
 }
 
-int cContactCard::mAddContact()
+string cContactCard::mcGetName()
 {
-
-	return 0;
+	return sName;
 }
 
-int cContactCard::mRemoveContact()
+string cContactCard::mcGetEmail()
 {
-
-	return 0;
+	return sEmail;
 }
 
-int cContactCard::mShowAllContacts()
+string cContactCard::mcGetPhone()
 {
-
-	return 0;
+	return sPhone;
 }
 
-int cContactCard::mSearchForContact()
+cContactCard* cContactCard::mcGetNextPosition()
+{
+	return pcNextPosition;
+}
+
+void cContactCard::mcChangeNextPosition(cContactCard* pcNewNextPosition)
+{
+	pcNextPosition = pcNewNextPosition;
+}
+void cContactCard::mcGetDataFromUser()
 {
 
+	cout << "Adding new contact:" << endl;
+	cout << "Name: ";
+	cin >> sName;
+	cout << "Email: ";
+	cin >> sEmail;
+	cout << "Phone: ";
+	cin >> sPhone;
 
-	return 0;
 }

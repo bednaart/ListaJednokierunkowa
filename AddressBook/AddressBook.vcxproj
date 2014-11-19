@@ -78,10 +78,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="cAddressBook.cpp" />
     <ClCompile Include="cContactCard.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="cAddressBook.h" />
     <ClInclude Include="cContactCard.h" />
     <ClInclude Include="main.h" />
   </ItemGroup>
