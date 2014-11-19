@@ -159,3 +159,45 @@ void cAddressBook::mcSearchForContact()
 
 
 }
+
+void cAddressBook::mcSwapTwoCards(cContactCard* pcPointerToCurrentCard, cContactCard* pcPointerToNextCard)
+{
+
+	pcPointerToCurrentCard->mcChangeNextPosition(pcPointerToNextCard->mcGetNextPosition());
+
+	pcPointerToNextCard->mcChangeNextPosition(pcPointerToCurrentCard);
+
+	pcPointerToCurrentCard = pcPointerToNextCard;
+
+}
+
+void cAddressBook::mcSortEntriesInDatabase()
+{
+	cContactCard* pcTempPointerToCurrentCard = NULL, * pcTempPointerToNextCard = NULL;
+	int iNumberOfChangesMade = 0;
+
+	do
+	{
+		pcTempPointerToCurrentCard = pcFirstElement;
+		pcTempPointerToNextCard = pcTempPointerToCurrentCard->mcGetNextPosition();
+		iNumberOfChangesMade = 0;
+
+		while (NULL != pcTempPointerToNextCard)
+		{
+			if (pcTempPointerToCurrentCard->mcGetName() > pcTempPointerToNextCard->mcGetName())
+			{				
+				mcSwapTwoCards(pcTempPointerToCurrentCard, pcTempPointerToNextCard);
+				iNumberOfChangesMade++;
+
+				pcTempPointerToNextCard = pcTempPointerToCurrentCard->mcGetNextPosition();
+			}
+			else
+			{
+				pcTempPointerToCurrentCard = pcTempPointerToNextCard;
+				pcTempPointerToNextCard = pcTempPointerToNextCard->mcGetNextPosition();
+			}
+
+		}
+	} while (0 < iNumberOfChangesMade);
+
+}
