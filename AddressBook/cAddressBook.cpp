@@ -57,12 +57,6 @@ int cAddressBook::mcShowAllContacts()
 	return 0;
 }
 
-int cAddressBook::mcSearchForContact()
-{
-
-
-	return 0;
-}
 
 int cAddressBook::mcShowMenu()
 {
@@ -102,6 +96,7 @@ void cAddressBook::mcDisplayAllContacts()
 	if (NULL == pcTempPointer)
 	{
 		cout << endl << "\tDatabase is empty!";
+		this_thread::sleep_for(chrono::seconds(1));
 	}
 	else
 	{
@@ -116,6 +111,51 @@ void cAddressBook::mcDisplayAllContacts()
 			iNumberOfContact++;
 			pcTempPointer = pcTempPointer->mcGetNextPosition();
 		}
+		system("PAUSE");
 	}
-	system("PAUSE");
+
+}
+
+void cAddressBook::mcSearchForContact()
+{
+	string sTextToFind;
+	cContactCard* pcTempPointer = pcFirstElement;
+	int iNumberOfContact = 1;
+
+	cout << endl << "Type part of name, email or phone to find." << endl << "Find: ";
+	cin >> sTextToFind;
+
+	if (NULL == pcTempPointer)
+	{
+		cout << endl << "Database is empty!" << endl;
+		this_thread::sleep_for(chrono::seconds(1));
+	}
+	else
+	{
+		while (NULL != pcTempPointer)
+		{
+			if ((string::npos != (pcTempPointer->mcGetName()).find(sTextToFind)) || (string::npos != (pcTempPointer->mcGetEmail()).find(sTextToFind)) || (string::npos != (pcTempPointer->mcGetPhone()).find(sTextToFind)) )
+			{	
+				cout << endl << "\t" << iNumberOfContact << ".";
+				cout << endl << "\tName: " << pcTempPointer->mcGetName();
+				cout << endl << "\tEmail: " << pcTempPointer->mcGetEmail();
+				cout << endl << "\tPhone: " << pcTempPointer->mcGetPhone();
+				cout << endl;
+			}
+
+			iNumberOfContact++;
+			pcTempPointer = pcTempPointer->mcGetNextPosition();
+		}
+
+		if (2 == iNumberOfContact)
+		{
+			cout << "No matches found!";
+		}
+
+		cout << endl;
+		system("PAUSE");
+	}
+
+
+
 }

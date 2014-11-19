@@ -1,4 +1,6 @@
 #pragma once
+#include <chrono>
+#include <thread>
 #include "cContactCard.h"
 
 using namespace std;
@@ -11,7 +13,7 @@ public:
 	int mcAddContact();
 	int mcRemoveContact();
 	int mcShowAllContacts();
-	int mcSearchForContact();
+	void mcSearchForContact();
 	int mcShowMenu();
 	void mcDisplayAllContacts();
 

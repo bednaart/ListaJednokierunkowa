@@ -21,7 +21,7 @@ int main()
 			break;
 
 		case 2:
-			iReturnValue = pcAddressBookInstance->mcSearchForContact();
+			pcAddressBookInstance->mcSearchForContact();
 
 			break;
 
