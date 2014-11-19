@@ -26,24 +26,24 @@ int main()
 			break;
 
 		case 3:
-			iReturnValue = pcAddressBookInstance->mcRemoveContact();
+			pcAddressBookInstance->mcDisplayAllContacts();
 
 			break;
 
 		case 4:
-			pcAddressBookInstance->mcDisplayAllContacts();
+			iReturnValue = pcAddressBookInstance->mcRemoveContact();
 
 			break;
 
 		case 0:
 			cout << endl << "Shuting down..." << endl;
-			//cout << string(100, '\n');
+
 			break;
 
 		default:
 			cout << endl << "Wrong option! Choose correct option" << endl;
 			this_thread::sleep_for(chrono::seconds(1));
-			//cout << string(100, '\n');
+
 			break;
 
 		}

@@ -16,7 +16,6 @@ int cAddressBook::mcAddContact()
 	cContactCard* mcNewContact = new cContactCard;
 
 	mcNewContact->mcGetDataFromUser();
-	cContactCard* pcPreviousTmpIterator = NULL;
 	cContactCard* pcCurrentTmpIterator = NULL;
 
 	pcCurrentTmpIterator = pcFirstElement;
@@ -25,21 +24,21 @@ int cAddressBook::mcAddContact()
 	if (NULL == pcCurrentTmpIterator)
 	{
 		pcFirstElement = mcNewContact;
-		cout << endl << "New contact added!";
+		cout << endl << " New contact added!";
 		return 0;
 	}
 	else
 	{
-		for (pcPreviousTmpIterator, pcCurrentTmpIterator; pcCurrentTmpIterator != NULL; pcCurrentTmpIterator = pcPreviousTmpIterator->mcGetNextPosition())
+		while (pcCurrentTmpIterator->mcGetNextPosition())
 		{
-			if (NULL == pcFirstTmpIterator)
-			{
-				pcFirstTmpIterator->mcChangeNextPosition(mcNewContact);
-
-				cout << endl << "New contact added!";
-				return 0;
-			}
+			pcCurrentTmpIterator = pcCurrentTmpIterator->mcGetNextPosition();
 		}
+
+		pcCurrentTmpIterator->mcChangeNextPosition(mcNewContact);
+
+		cout << endl << "New contact added!";
+		return 0;
+
 	}
 
 	cout << endl << "Contact not added!";
@@ -69,7 +68,7 @@ int cAddressBook::mcShowMenu()
 {
 	int iChoosenOption;
 	string sChoosenOption;
-
+	system("CLS");
 	cout << "Address Book Menu:" << endl;
 	cout << "1. Add new contact" << endl;
 	cout << "2. Search for contact" << endl;
@@ -79,7 +78,7 @@ int cAddressBook::mcShowMenu()
 
 	cout << "Choosen option: ";
 	cin >> sChoosenOption;
-	//cout << string(100, '\n');
+
 
 	if (1 == sChoosenOption.length() && isdigit(sChoosenOption[0]))
 	{
@@ -94,49 +93,29 @@ int cAddressBook::mcShowMenu()
 
 }
 
-int cAddressBook::mcGetDataAndFillForm(cContactCard* mcNewContact)
-{
-	mcNewContact->mcGetDataFromUser();
-	cContactCard* pcFirstTmpIterator = NULL;
-	cContactCard* pcSecondTmpIterator = NULL;
 
-	pcFirstTmpIterator = pcFirstElement;
-
-	if (NULL == pcFirstTmpIterator)
-	{
-		pcFirstTmpIterator->mcChangeNextPosition(mcNewContact);
-		cout << endl << "New contact added!";
-		return 0;
-	}
-	else
-	{
-		for (pcFirstTmpIterator; pcFirstTmpIterator != NULL; pcFirstTmpIterator = pcFirstElement->mcGetNextPosition())
-		{
-			if (NULL == pcFirstTmpIterator)
-			{
-				pcFirstTmpIterator->mcChangeNextPosition(mcNewContact);
-
-				cout << endl << "New contact added!";
-				return 0;
-			}
-		}
-	}
-
-	cout << endl << "Contact not added!";
-	return 1;
-}
 void cAddressBook::mcDisplayAllContacts()
 {
 	cContactCard* pcTempPointer = pcFirstElement;
 	int iNumberOfContact = 1;
 
-	for (pcTempPointer, iNumberOfContact; pcTempPointer != NULL; pcTempPointer = pcTempPointer->mcGetNextPosition(), iNumberOfContact++)
+	if (NULL == pcTempPointer)
 	{
-		cout << endl << iNumberOfContact << ".";
-		cout << endl << "Name: " << pcTempPointer->mcGetName();
-		cout << endl << "Email: " << pcTempPointer->mcGetEmail();
-		cout << endl << "Phone: " << pcTempPointer->mcGetPhone();
-		cout << endl;
+		cout << endl << "\tDatabase is empty!";
 	}
+	else
+	{
+		while (NULL != pcTempPointer)
+		{
+			cout << endl << "\t" << iNumberOfContact << ".";
+			cout << endl << "\tName: " << pcTempPointer->mcGetName();
+			cout << endl << "\tEmail: " << pcTempPointer->mcGetEmail();
+			cout << endl << "\tPhone: " << pcTempPointer->mcGetPhone();
+			cout << endl << endl;
 
+			iNumberOfContact++;
+			pcTempPointer = pcTempPointer->mcGetNextPosition();
+		}
+	}
+	system("PAUSE");
 }
