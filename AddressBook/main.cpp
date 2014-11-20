@@ -18,6 +18,7 @@ int main()
 		case 1:
 			iReturnValue = pcAddressBookInstance->mcAddContact();
 			pcAddressBookInstance->mcSortEntriesInDatabase();
+			
 			break;
 
 		case 2:

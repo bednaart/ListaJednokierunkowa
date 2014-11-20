@@ -62,7 +62,7 @@ int cAddressBook::mcShowMenu()
 {
 	int iChoosenOption;
 	string sChoosenOption;
-	system("CLS");
+	//system("CLS");
 	cout << "Address Book Menu:" << endl;
 	cout << "1. Add new contact" << endl;
 	cout << "2. Search for contact" << endl;
@@ -160,12 +160,14 @@ void cAddressBook::mcSearchForContact()
 
 }
 
-void cAddressBook::mcSwapTwoCards(cContactCard* pcPointerToCurrentCard, cContactCard* pcPointerToNextCard)
+void cAddressBook::mcSwapTwoCards(cContactCard& pcPointerToCurrentCard, cContactCard& pcPointerToNextCard)
 {
+	cout << "pcPointerToCurrentCard: " << &pcPointerToCurrentCard << endl << "pcPointerToNextCard: " << &pcPointerToNextCard << endl;
+	//cContactCard pcFirstTempPointer = pcPointerToCurrentCard, pcSecondTempPointer = &pcPointerToNextCard;
+	system("PASUE");
+	pcPointerToCurrentCard.mcChangeNextPosition(pcPointerToNextCard.mcGetNextPosition());
 
-	pcPointerToCurrentCard->mcChangeNextPosition(pcPointerToNextCard->mcGetNextPosition());
-
-	pcPointerToNextCard->mcChangeNextPosition(pcPointerToCurrentCard);
+	pcPointerToNextCard.mcChangeNextPosition(&pcPointerToCurrentCard);
 
 	pcPointerToCurrentCard = pcPointerToNextCard;
 
@@ -173,31 +175,68 @@ void cAddressBook::mcSwapTwoCards(cContactCard* pcPointerToCurrentCard, cContact
 
 void cAddressBook::mcSortEntriesInDatabase()
 {
-	cContactCard* pcTempPointerToCurrentCard = NULL, * pcTempPointerToNextCard = NULL;
-	int iNumberOfChangesMade = 0;
 
-	do
+	if (NULL != pcFirstElement->mcGetNextPosition())
 	{
-		pcTempPointerToCurrentCard = pcFirstElement;
-		pcTempPointerToNextCard = pcTempPointerToCurrentCard->mcGetNextPosition();
-		iNumberOfChangesMade = 0;
+		cContactCard* pcTempPointerToPreviousCard = pcFirstElement, *pcTempPointerToCurrentCard = pcFirstElement->mcGetNextPosition();
+		cContactCard* pcIterator = pcFirstElement;
+		int iNumberOfChangesMade = 0;
 
-		while (NULL != pcTempPointerToNextCard)
+		for (pcIterator; NULL != pcIterator; pcIterator = pcIterator->mcGetNextPosition())
 		{
-			if (pcTempPointerToCurrentCard->mcGetName() > pcTempPointerToNextCard->mcGetName())
-			{				
-				mcSwapTwoCards(pcTempPointerToCurrentCard, pcTempPointerToNextCard);
-				iNumberOfChangesMade++;
+			cout << "1." << endl;
+			pcTempPointerToCurrentCard = pcFirstElement;
+			pcTempPointerToNextCard = pcFirstElement->mcGetNextPosition();
 
-				pcTempPointerToNextCard = pcTempPointerToCurrentCard->mcGetNextPosition();
-			}
-			else
+			while (NULL != pcTempPointerToNextCard)
 			{
-				pcTempPointerToCurrentCard = pcTempPointerToNextCard;
+				if (pcTempPointerToCurrentCard->mcGetName() > pcTempPointerToNextCard->mcGetName())
+				{
+					mcSwapTwoCards(*pcTempPointerToCurrentCard, *pcTempPointerToNextCard);
+					cout << "2." << endl;
+					//iNumberOfChangesMade++;
+
+				}
+
+				cout << "3." << endl;
+				pcTempPointerToCurrentCard = pcTempPointerToCurrentCard->mcGetNextPosition();
 				pcTempPointerToNextCard = pcTempPointerToNextCard->mcGetNextPosition();
+
 			}
 
 		}
-	} while (0 < iNumberOfChangesMade);
+		/*
+		while (NULL != pcTempPointerToNextCard->mcGetNextPosition())
+		{
+			do
+			{
+				pcTempPointerToCurrentCard = pcFirstElement;
+				pcTempPointerToNextCard = pcTempPointerToCurrentCard->mcGetNextPosition();
+				iNumberOfChangesMade = 0;
 
+				while (NULL != pcTempPointerToNextCard->mcGetNextPosition())
+				{
+					cout << "1." << endl;
+					if (pcTempPointerToCurrentCard->mcGetName() > pcTempPointerToNextCard->mcGetName())
+					{
+						cout << "2." << endl;
+						//mcSwapTwoCards(*pcTempPointerToCurrentCard, *pcTempPointerToNextCard);
+						iNumberOfChangesMade++;
+
+						//pcTempPointerToNextCard = pcTempPointerToCurrentCard->mcGetNextPosition();
+					}
+
+					cout << "3." << endl;
+					cout << "pcTempPointerToCurrentCard: " << (&pcTempPointerToCurrentCard) << endl;
+					cout << "pcTempPointerToNextCard: " << (&pcTempPointerToNextCard) << endl;
+					pcTempPointerToCurrentCard = pcTempPointerToCurrentCard->mcGetNextPosition();
+					pcTempPointerToNextCard = pcTempPointerToNextCard->mcGetNextPosition();
+
+
+				}
+			} while (0 < iNumberOfChangesMade);
+		}*/
+	
+	
+	}
 }
