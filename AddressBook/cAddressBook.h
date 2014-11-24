@@ -16,13 +16,14 @@ public:
 	void mcSearchForContact();
 	int mcShowMenu();
 	void mcDisplayAllContacts();
-	void mcSwapTwoCards(cContactCard& pcPointerToCurrentCard, cContactCard& pcPointerToNextCard);
-	void cAddressBook::mcSortEntriesInDatabase();
+	void mcSwapTwoCards(cContactCard* pcPointerToCurrentCard, cContactCard* pcPointerToNextCard);
+	void mcSortEntriesInDatabase();
+	int mcGetNumerOfEntries();
 
 private:
 
 	cContactCard* pcFirstElement = NULL;
-
+	int iNumberOfEntries = 0;
 
 };
 
