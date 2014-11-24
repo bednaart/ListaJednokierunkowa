@@ -12,7 +12,6 @@ public:
 	~cAddressBook();
 	int mcAddContact();
 	int mcRemoveContact();
-	int mcShowAllContacts();
 	void mcSearchForContact();
 	int mcShowMenu();
 	void mcDisplayAllContacts();

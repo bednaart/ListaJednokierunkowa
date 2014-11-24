@@ -30,12 +30,9 @@ int cAddressBook::mcAddContact()
 	}
 	else
 	{
-		while (pcCurrentTmpIterator->mcGetNextPosition())
-		{
-			pcCurrentTmpIterator = pcCurrentTmpIterator->mcGetNextPosition();
-		}
-
-		pcCurrentTmpIterator->mcChangeNextPosition(mcNewContact);
+	
+		mcNewContact->mcChangeNextPosition(pcFirstElement);
+		pcFirstElement = mcNewContact;
 
 		cout << endl << "New contact added!";
 		iNumberOfEntries++;
@@ -49,24 +46,56 @@ int cAddressBook::mcAddContact()
 
 int cAddressBook::mcRemoveContact()
 {
+	mcDisplayAllContacts();
+	string sContactToRemove;
+	cContactCard* pcTempPointer = pcFirstElement, *pcTempAddressToDeleteCard = NULL;
+	int iIsAnythingFound = 0;
 
+	if (NULL != pcTempPointer)
+	{
+		cout << "Type contact name to remove: ";
+		cin >> sContactToRemove;
 
+		if (pcTempPointer->mcGetName() == sContactToRemove)
+		{
+			pcFirstElement = pcTempPointer->mcGetNextPosition();
+			delete pcTempPointer;
+		}
+		else
+		{
+			while (NULL != pcTempPointer->mcGetNextPosition())
+			{
+				if ((pcTempPointer->mcGetNextPosition())->mcGetName() == sContactToRemove)
+				{
+					pcTempAddressToDeleteCard = pcTempPointer->mcGetNextPosition();
+					pcTempPointer->mcChangeNextPosition(pcTempPointer->mcGetNextPosition()->mcGetNextPosition());
+					delete pcTempAddressToDeleteCard;
 
+					cout << endl << "\tContact " << sContactToRemove << " removed!" << endl;
+					iIsAnythingFound++;
+					break;
+				}
+
+				pcTempPointer = pcTempPointer->mcGetNextPosition();
+			}
+
+			if (0 == iIsAnythingFound)
+			{
+				cout << "No matches found! Contact not removed!";
+				this_thread::sleep_for(chrono::seconds(1));
+			}
+		}
+	}
 	return 0;
 }
 
-int cAddressBook::mcShowAllContacts()
-{
-
-	return 0;
-}
 
 
 int cAddressBook::mcShowMenu()
 {
 	int iChoosenOption;
 	string sChoosenOption;
-	//system("CLS");
+	system("CLS");
 	cout << "Address Book Menu:" << endl;
 	cout << "1. Add new contact" << endl;
 	cout << "2. Search for contact" << endl;
@@ -167,27 +196,20 @@ void cAddressBook::mcSearchForContact()
 
 void cAddressBook::mcSwapTwoCards(cContactCard* pcPointerToCurrentCard, cContactCard* pcPointerToNextCard)
 {
-
 	cContactCard* pcTempPointer = pcFirstElement;
 
 	if (pcPointerToCurrentCard == pcFirstElement)
 	{
-		cout << endl << "pcPointerToCurrentCard: " << pcPointerToCurrentCard << endl << "Next: " << pcPointerToCurrentCard->mcGetNextPosition();
-		cout << endl << "pcPointerToNextCard: " << pcPointerToNextCard << endl << "Next: " << pcPointerToNextCard->mcGetNextPosition();
 		cout << endl;
 
 		pcFirstElement = pcPointerToNextCard;
 		pcPointerToCurrentCard->mcChangeNextPosition(pcPointerToNextCard->mcGetNextPosition());
 		pcPointerToNextCard->mcChangeNextPosition(pcPointerToCurrentCard);
 
-		cout << endl << "pcPointerToCurrentCard: " << pcPointerToCurrentCard << endl << "Next: " << pcPointerToCurrentCard->mcGetNextPosition();
-		cout << endl << "pcPointerToNextCard: " << pcPointerToNextCard << endl << "Next: " << pcPointerToNextCard->mcGetNextPosition();
 		cout << endl;
 	}
 	else
 	{
-		cout << endl << "pcPointerToCurrentCard: " << pcPointerToCurrentCard << endl << "Next: " << pcPointerToCurrentCard->mcGetNextPosition();
-		cout << endl << "pcPointerToNextCard: " << pcPointerToNextCard << endl << "Next: " << pcPointerToNextCard->mcGetNextPosition();
 		cout << endl;
 
 		while (pcTempPointer->mcGetNextPosition() != pcPointerToCurrentCard)
@@ -199,10 +221,6 @@ void cAddressBook::mcSwapTwoCards(cContactCard* pcPointerToCurrentCard, cContact
 		pcPointerToCurrentCard->mcChangeNextPosition(pcPointerToNextCard->mcGetNextPosition());
 		pcPointerToNextCard->mcChangeNextPosition(pcPointerToCurrentCard);
 
-		//mcDisplayAllContacts();
-
-		cout << endl << "pcPointerToCurrentCard: " << pcPointerToCurrentCard << endl << "Next: " << pcPointerToCurrentCard->mcGetNextPosition();
-		cout << endl << "pcPointerToNextCard: " << pcPointerToNextCard << endl << "Next: " << pcPointerToNextCard->mcGetNextPosition();
 		cout << endl;
 	}
 
@@ -210,37 +228,40 @@ void cAddressBook::mcSwapTwoCards(cContactCard* pcPointerToCurrentCard, cContact
 
 void cAddressBook::mcSortEntriesInDatabase()
 {
-	//cContactCard* pcTempPointerToPreviouseCard, *pcTempPointerToCurrentCard, *pcTempPointerToNextCard;
-	cContactCard* pcFirstIterator, *pcSecondIterator, *pcThirdIterator, *pcFourthIterator;
+	cContactCard* pcFirstLoopIterator, *pcSecondLoopIterator, *pcThirdIterator = NULL, *pcFourthIterator = NULL;
 	
 
-	//if (NULL != pcFirstElement->mcGetNextPosition())
+	if (NULL != pcFirstElement->mcGetNextPosition())
 	{
-		for (pcFirstIterator = pcFirstElement; NULL != pcFirstIterator->mcGetNextPosition(); pcFirstIterator = pcFirstIterator->mcGetNextPosition())
+		for (pcFirstLoopIterator = pcFirstElement; NULL != pcFirstLoopIterator->mcGetNextPosition(); pcFirstLoopIterator = pcFirstLoopIterator->mcGetNextPosition())
 		{
-			for (pcSecondIterator = pcFirstElement; NULL != pcSecondIterator->mcGetNextPosition(); pcSecondIterator = pcSecondIterator->mcGetNextPosition())
+			cout << endl;
+			for (pcSecondLoopIterator = pcFirstElement; NULL != pcSecondLoopIterator->mcGetNextPosition(); pcSecondLoopIterator = pcSecondLoopIterator->mcGetNextPosition())
 			{
-				cout << endl << "pcSecondIterator->mcGetName(): " << pcSecondIterator->mcGetName() << endl;
-				cout << endl << "pcSecondIterator->mcGetNextPosition()->mcGetName(): " << pcSecondIterator->mcGetNextPosition()->mcGetName() << endl;
-				if (pcSecondIterator->mcGetName() > (pcSecondIterator->mcGetNextPosition())->mcGetName())
+				cout << endl;
+				if (pcSecondLoopIterator->mcGetName() > (pcSecondLoopIterator->mcGetNextPosition())->mcGetName())
 				{		
-					cout << endl << "pcPointerToCurrentCard: " << (pcSecondIterator) << endl << "Next: " << pcSecondIterator->mcGetNextPosition();
-					cout << endl << "pcPointerToNextCard: " << (pcSecondIterator->mcGetNextPosition()) << endl << "Next: " << (pcSecondIterator->mcGetNextPosition())->mcGetNextPosition();
 					cout << endl;
 					
-					pcThirdIterator = pcFirstIterator->mcGetNextPosition();
-					pcFourthIterator = pcSecondIterator->mcGetNextPosition();
+					if (pcFirstLoopIterator == pcSecondLoopIterator)
+					{
+						pcThirdIterator = pcFirstLoopIterator->mcGetNextPosition();
+					}
+					
+					pcFourthIterator = pcSecondLoopIterator->mcGetNextPosition();
 
-					mcSwapTwoCards(pcSecondIterator, pcSecondIterator->mcGetNextPosition());
+					mcSwapTwoCards(pcSecondLoopIterator, pcSecondLoopIterator->mcGetNextPosition());
 
-					pcFirstIterator = pcThirdIterator;
-					pcSecondIterator = pcFourthIterator;
+					if (pcFirstLoopIterator == pcSecondLoopIterator)
+					{
+						pcFirstLoopIterator = pcThirdIterator;
+					}
 
-					mcDisplayAllContacts();
+					pcSecondLoopIterator = pcFourthIterator;
+
 					cout << endl;
-					//cout << endl << "pcPointerToCurrentCard: " << pcSecondIterator << endl << "Next: " << pcSecondIterator->mcGetNextPosition();
-					//cout << endl << "pcPointerToNextCard: " << (pcSecondIterator->mcGetNextPosition()) << endl << "Next: " << (pcSecondIterator->mcGetNextPosition())->mcGetNextPosition();
-					//cout << endl;
+					pcSecondLoopIterator->mcGetNextPosition();
+					cout << endl;
 				}
 			}
 		}
