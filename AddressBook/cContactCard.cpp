@@ -6,6 +6,12 @@ cContactCard::cContactCard()
 {
 }
 
+cContactCard::cContactCard(string sNameFromFile, string sEmailFromFile, string sPhoneFromFile)
+{
+	sName = sNameFromFile;
+	sEmail = sEmailFromFile;
+	sPhone = sPhoneFromFile;
+}
 cContactCard::~cContactCard()
 {
 }

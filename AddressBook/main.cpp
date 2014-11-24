@@ -1,5 +1,6 @@
 #include "main.h"
 #include "cAddressBook.h"
+
 using namespace std;
 
 int main()
@@ -34,6 +35,10 @@ int main()
 		case 4:
 			iReturnValue = pcAddressBookInstance->mcRemoveContact();
 
+			break;
+		case 5:
+			iReturnValue = pcAddressBookInstance->mcLoadDatabaseFromFile();
+			pcAddressBookInstance->mcSortEntriesInDatabase();
 			break;
 
 		case 0:

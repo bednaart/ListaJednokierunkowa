@@ -6,7 +6,6 @@ cAddressBook::cAddressBook()
 {
 }
 
-
 cAddressBook::~cAddressBook()
 {
 }
@@ -16,9 +15,7 @@ int cAddressBook::mcAddContact()
 	cContactCard* mcNewContact = new cContactCard;
 
 	mcNewContact->mcGetDataFromUser();
-	cContactCard* pcCurrentTmpIterator = NULL;
-
-	pcCurrentTmpIterator = pcFirstElement;
+	cContactCard* pcCurrentTmpIterator = pcFirstElement;
 
 
 	if (NULL == pcCurrentTmpIterator)
@@ -41,6 +38,26 @@ int cAddressBook::mcAddContact()
 	}
 
 	cout << endl << "Contact not added!";
+	return 1;
+}
+
+int cAddressBook::mcAddContact(string sNameFromFile, string sEmailFromFile, string sPhoneFromFile)
+{
+	cContactCard* mcNewContact = new cContactCard(sNameFromFile, sEmailFromFile, sPhoneFromFile);
+	cContactCard* pcCurrentTmpIterator = pcFirstElement;
+
+	if (NULL == pcCurrentTmpIterator)
+	{
+		pcFirstElement = mcNewContact;
+		return 0;
+	}
+	else
+	{
+		mcNewContact->mcChangeNextPosition(pcFirstElement);
+		pcFirstElement = mcNewContact;;
+		return 0;
+
+	}
 	return 1;
 }
 
@@ -101,6 +118,7 @@ int cAddressBook::mcShowMenu()
 	cout << "2. Search for contact" << endl;
 	cout << "3. Display all contacts" << endl;
 	cout << "4. Remove contact" << endl;
+	cout << "5. Load contacts from file database.xml" << endl;
 	cout << "0. Exit" << endl << endl;
 
 	cout << "Choosen option: ";
@@ -273,4 +291,32 @@ void cAddressBook::mcSortEntriesInDatabase()
 int cAddressBook::mcGetNumerOfEntries()
 {
 	return iNumberOfEntries;
+}
+
+int cAddressBook::mcLoadDatabaseFromFile()
+{
+	XMLDocument* xmlDatabase = new XMLDocument;
+
+	if (!xmlDatabase->LoadFile("database.xml"))
+	{
+		XMLElement* xmlContactsIterator, *xmlContactsDataIterator;
+		vector<string>* vNewContactFromFile = new vector<string>;
+
+		xmlContactsIterator = xmlDatabase->FirstChildElement("AddressBook")->FirstChildElement("Contact");
+
+		for (xmlContactsIterator; xmlContactsIterator != NULL; xmlContactsIterator = xmlContactsIterator->NextSiblingElement())
+		{
+			for (xmlContactsDataIterator = xmlContactsIterator->FirstChildElement(); xmlContactsDataIterator != NULL; xmlContactsDataIterator = xmlContactsDataIterator->NextSiblingElement())
+			{
+				vNewContactFromFile->push_back(xmlContactsDataIterator->GetText());
+			}
+			mcAddContact(vNewContactFromFile->at(0), vNewContactFromFile->at(1), vNewContactFromFile->at(2));
+			vNewContactFromFile->clear();
+		}
+
+		xmlDatabase->Clear();
+	}
+
+	
+	return 0;
 }
